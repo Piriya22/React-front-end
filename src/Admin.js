@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+// import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import pic from './Images/pic.jpg'
+
 
 function AdminPage() {
 
@@ -33,6 +37,13 @@ const fetchNotApprovedDoctors=()=>{
     setActiveSection(section);
   };
 
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+  localStorage.removeItem('token');
+    navigate('/home');
+  };
+
   return (
     <>
      <header className="navbar navbar-expand-lg navbar-light" style={{ backgroundColor: "#337ab7", color: "#fff" }}>
@@ -40,20 +51,32 @@ const fetchNotApprovedDoctors=()=>{
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
     </button>
-    <a className="navbar-brand" style={{ color: "#fff", fontSize: "20px" }}>ADMIN PAGE</a>
+    
+    <a href="/home" className="navbar-brand d-flex align-items-center px-4 px-lg-5">
+                    <h1 className="m-0 text-warning" color="">Admin Page</h1>
+                </a>
     <div className="collapse navbar-collapse" id="navbarNav">
       <ul className="navbar-nav me-auto mb-1 mb-lg-0 justify-content-center">
         <li className="nav-item">
-          <a className="nav-link" onClick={() => handleSectionClick('doctors')} style={{ color: "#fff", fontSize: "16px" }}>Doctors</a>
+          <a className="nav-link" onClick={() => handleSectionClick('doctors')} style={{ color: "#fff", fontSize: "16px" }}>Not Approved</a>
         </li>
         <li className="nav-item">
-          <a className="nav-link" onClick={() => handleSectionClick('getDoctors')} style={{ color: "#fff", fontSize: "16px" }}>Get Doctors</a>
+          <a className="nav-link" onClick={() => handleSectionClick('getDoctors')} style={{ color: "#fff", fontSize: "16px" }}>Active</a>
         </li>
-        <li className="nav-item">
-          <a className="nav-link disabled" tabIndex="-1" aria-disabled="true" style={{ color: "#fff", fontSize: "16px" }}>Disabled</a>
-        </li>
+        
       </ul>
-      <span className="navbar-text me-2" style={{ color: "#fff", fontSize: "16px", border: "1px solid #fff", padding: "5px 10px", borderRadius: "4px" }}>Hi, Admin</span>
+   
+      <div className="navbar">
+      
+      <button
+        className="btn btn-danger"
+        style={{ marginLeft: '10px' }}
+        onClick={handleLogout}
+      >
+        Logout
+      </button>
+    </div>
+  
     </div>
   </div>
 </header>
@@ -64,8 +87,17 @@ const fetchNotApprovedDoctors=()=>{
   
       {activeSection === 'content' && (
         <div className="content">
-          <div className="context">
-            <h1>Hello</h1>
+          <div className="context" 
+          style={{
+            backgroundImage: `url(${pic})`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backdropFilter: "blur(15px)",
+            minHeight: "100vh",
+            minWidth: "100%"
+          }}>
+            
+           
           </div>
         </div>
       )}
@@ -73,7 +105,14 @@ const fetchNotApprovedDoctors=()=>{
       {activeSection === 'doctors' && (
         <div className="doctors">
           <section className="my-background-radial-gradient overflow-hidden">
-            <div className="my-doctors-container container">
+            <div className="my-doctors-container container" style={{
+            backgroundImage: `url(${pic})`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backdropFilter: "blur(15px)",
+            minHeight: "100vh",
+            minWidth: "100%"
+          }}>
               <div className="my-page-heading">
                 <h2>Not Approved Doctor Details</h2>
                 <hr />
@@ -82,8 +121,8 @@ const fetchNotApprovedDoctors=()=>{
                 <div className="row row-cols-1 row-cols-md-4 g-4">
                   {notApprovedDoctors.map(doctor => (
                     <div key={doctor.doctor_Id} className="col">
-                      <div className="card my-bg-glass">
-                        <div className="card-body">
+                      <div className="card my-bg-glass" style={{backgroundColor: "transparent",backdropFilter: 'blur(15px)', border: '2px solid rgba(255,255,255,0.5)'}}>
+                        <div className="card-body" style={{color:"white"}}>
                         <img
                           src={`https://localhost:7145/uploads/${doctor.doctor_Image}`}
                           className="card-img-top"
@@ -177,7 +216,14 @@ const fetchNotApprovedDoctors=()=>{
       {activeSection === 'getDoctors' && (
         <div className="getDoctors">
           <section className="my-background-radial-gradient overflow-hidden">
-            <div className="my-doctors-container container">
+            <div className="my-doctors-container container" style={{
+            backgroundImage: `url(${pic})`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backdropFilter: "blur(15px)",
+            minHeight: "90vh",
+            minWidth: "100%"
+          }}>
               <div className="my-page-heading">
                 <h2>Approved Doctor Details</h2>
                 

@@ -2,6 +2,7 @@ import React ,{Component}from "react";
 import { variables } from "./Variable";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from 'react-router-dom';
+import group from './Images/group.jpg';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -19,6 +20,8 @@ export class Doctorreg extends Component{
           password:"",
           status:null,
           doctor_Id: null,
+          doc_name:"",
+          doc_password:""
         };
       }
       
@@ -26,7 +29,7 @@ export class Doctorreg extends Component{
         this.fetchDoctor();
       }
       fetchDoctor() {
-        axios.get(variables.API_URL + 'Doctor', {
+        axios.get(variables.API_URL + 'Doctors', {
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('token')
           }
@@ -47,13 +50,15 @@ export class Doctorreg extends Component{
       
 
       createItem = () => {
-        const { doctor_Name, doctor_Specialisation, gender,doctor_Experience,password, doctor_Image } = this.state;
+        const { doctor_Name, doctor_Specialisation, gender,doctor_Experience,password, doctor_Image,doc_name,doc_password } = this.state;
         const formData = new FormData();
         formData.append("doctor_Name", doctor_Name);
         formData.append("doctor_Specialisation", doctor_Specialisation);
         formData.append("gender", gender);
         formData.append("doctor_Experience", doctor_Experience);
         formData.append("password", password);
+        formData.append("doc_name", doc_name);
+        formData.append("doc_password", doc_password);
         formData.append("imageFile", doctor_Image);
         fetch("https://localhost:7145/api/Doctors", {
           method: "POST",
@@ -84,6 +89,8 @@ export class Doctorreg extends Component{
               gender:"",
               password:"",
               doctor_Image: null,
+              doc_name:"",
+              doc_password:""
             });
           })
           .catch((error) => {
@@ -110,6 +117,12 @@ export class Doctorreg extends Component{
       handlepassInputChange=(event) => {
         this.setState({ password: event.target.value });
       };
+      handledocpassInputChange=(event) => {
+        this.setState({ doc_password: event.target.value });
+      };
+      handledocnameInputChange=(event) => {
+        this.setState({ doc_name: event.target.value });
+      };
       render(){
         const {
             Doctor,
@@ -121,16 +134,24 @@ export class Doctorreg extends Component{
             password,
             status,
             doctor_Id,
+            doc_name,
+            doc_password
            
           } = this.state;
           return(
-            <div className="container" style={{ backgroundColor: '#7d6970' }}>
+            <div className="container" style={{
+              backgroundImage: `url(${group})`,
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+              backdropFilter: "blur(15px)",
+              minHeight: "100vh",
+              minWidth: "100%"
+            }}>
       
           <div className="col-4 mx-auto">
-          <div className="card" style={{backgroundImage: "url('https://media.istockphoto.com/id/1295677476/vector/electronic-patient-profile-or-online-medical-consulting.jpg?s=612x612&w=0&k=20&c=kW9i8p_48ZlvWI8bnr9lAcg0JwYuh_OdHHi7h6cXp9o=')",
-  backgroundSize: 'cover',backgroundPosition: 'center',backgroundColor: '#eaf2f8', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+          <div className="card" style={{ maxWidth: "600px", marginBottom: "20px", backgroundColor: "transparent", backdropFilter: 'blur(15px)' }}>
         <div className="card-body">
-          <h5 className="card-title" style={{ color: 'black' }}>Create New Doctor</h5>
+          <h5 className="card-title" style={{ color: 'black' }}>DOCTOR'S REGISTRATION</h5>
           <div className="form-group" style={{ color: 'black' }}>
             <label htmlFor="doctor_Name">Doctor Name:</label>
             <input
@@ -153,7 +174,7 @@ export class Doctorreg extends Component{
           </div>
 
           <div className="form-group" style={{ color: 'black' }}>
-            <label htmlFor="doctor_Specialisation">doctor_Specialisation</label>
+            <label htmlFor="doctor_Specialisation">Doctor Specialisation</label>
             <input
               type="text"
               className="form-control"
@@ -193,8 +214,29 @@ export class Doctorreg extends Component{
               onChange={this.handlepassInputChange}
             />
           </div>
-          <Link className="btn btn-primary"to={'/doctor'} style={{ backgroundColor: '#1976d2' }} onClick={this.createItem}>
-            Create Doctor
+          <div className="form-group" style={{ color: 'black' }}>
+            <label htmlFor="password">Doctor name:</label>
+            <input
+              type="doc_name"
+              className="form-control"
+              id="doc_name"
+              value={doc_name}
+              onChange={this.handledocnameInputChange}
+            />
+          </div>
+          <div className="form-group" style={{ color: 'black' }}>
+            <label htmlFor="password">Doctor Password:</label>
+            <input
+              type="doc_password"
+              className="form-control"
+              id="doc_password"
+              value={doc_password}
+              onChange={this.handledocpassInputChange}
+            />
+          </div><br/>
+          
+          <Link className="btn btn-primary"to={'/Login'} style={{ backgroundColor: '#1976d2' }} onClick={this.createItem}>
+            REGISTER
           </Link>
         </div>
       </div>

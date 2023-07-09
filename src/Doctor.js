@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import axios from 'axios';
+import gra from './Images/lady.jpg'
 export class Doctor extends Component{
     constructor(props) {
         super(props);
@@ -17,6 +18,7 @@ export class Doctor extends Component{
           password:"",
           status:null,
           doctor_Id: null,
+          doc_password:""
         };
       }
       componentDidMount() {
@@ -85,15 +87,19 @@ export class Doctor extends Component{
       handledocIdInputChange=(event) => {
         this.setState({doctor_Id : event.target.value });
       };
+      handledocpasswordChange=(event) => {
+        this.setState({doctor_password : event.target.value });
+      };
+
       createItem = () => {
-        const { doctor_Name, doctor_Specialisation, gender,doctor_Experience,password, doctor_Image } = this.state;
+        const { doctor_Name, doctor_Specialisation, gender,doctor_Experience,password, doctor_Image,doc_password } = this.state;
         const formData = new FormData();
         formData.append("doctor_Name", doctor_Name);
         formData.append("doctor_Specialisation", doctor_Specialisation);
         formData.append("gender", gender);
         formData.append("doctor_Experience", doctor_Experience);
         formData.append("password", password);
-
+        formData.append("doc_password", doc_password);
         formData.append("imageFile", doctor_Image);
       
         fetch("https://localhost:7145/api/Doctors", {
@@ -119,6 +125,7 @@ export class Doctor extends Component{
               gender:"",
               password:"",
               doctor_Image: null,
+              doc_password:""
             });
           })
           .catch((error) => {
@@ -126,7 +133,7 @@ export class Doctor extends Component{
           });
       };
       editItem = () => {
-        const { doctor_Id,doctor_Name, doctor_Specialisation, gender,doctor_Experience,password, doctor_Image  } = this.state;
+        const { doctor_Id,doctor_Name, doctor_Specialisation, gender,doctor_Experience,password, doctor_Image,doc_password  } = this.state;
       
         const formData = new FormData();
         formData.append('doctor_Id', doctor_Id);
@@ -137,6 +144,7 @@ export class Doctor extends Component{
         formData.append('doctor_Experience', doctor_Experience);
         formData.append('password', password);
         formData.append('imageFile', doctor_Image);
+        formData.append('doc_password', doc_password);
       
         axios.put(variables.API_URL + `Doctors/${doctor_Id}`, formData, {
           headers: {
@@ -156,9 +164,9 @@ export class Doctor extends Component{
               doctor_Experience:0,
               password:"",
               doctor_Image: null,
+              doc_password:""
             });
       
-            // Update the image source
             const imageElement = document.getElementById('doctor_Image');
             if (imageElement) {
               imageElement.src = data.doctor_Image;
@@ -196,31 +204,34 @@ export class Doctor extends Component{
             password,
             status,
             doctor_Id,
+            doctor_password
            
           } = this.state;
       
         return(
        
 
-            <div className="container">
-              
- <h1 className="mb-4">List Of Doctors</h1>
+<div className="container" style={{ backgroundImage: `url(${gra})`, backgroundSize: 'cover', backgroundPosition: 'fixed', backgroundRepeat: 'no-repeat', minHeight: '100vh', minWidth: '100%', backdropFilter: 'blur(15px)', border: '2px solid rgba(255,255,255,0.5)' }}>
 
-<div className="row">
+              
+              <h1 className="mb-4 text-center" style={{ color: 'black' }}><br/>List Of Doctors</h1><br/>
+
+
+<div className="row" >
   {Doctor.map((doc) => (
     <div className="col-md-4 mb-4" key={doc.doctor_Id}>
-      <div className="card card-small">
+      <div className="card card-small" style={{backgroundColor: "transparent",backdropFilter: 'blur(15px)', border: '2px solid rgba(255,255,255,0.5)'}}>
       <img
   src={`https://localhost:7145/uploads/${doc.doctor_Image}`}
   className="card-img-top doctor-image"
   alt={doc.doctor_Name}
 />
-        <div className="card-body">
-          <h5 className="card-title">{doc.doctor_Name}</h5>
-          <p className="card-text">doctor_Specialisation: {doc.doctor_Specialisation}</p>
-          <p className="card-text">Doctor Gender: {doc.gender}</p>
-          <p className="card-text">Doctor Experience: {doc.doctor_Experience}</p>
-          <div className="btn-group" role="group">
+        <div className="card-body" style={{color: 'black', justifyContent: 'center', alignItems: 'center' }}>
+          <h2 className="card-title">{doc.doctor_Name}</h2>
+          <p className="card-text">SPECIALISATION: {doc.doctor_Specialisation}</p>
+          <p className="card-text">GENDER: {doc.gender}</p>
+          <p className="card-text">EXPERIENCE: {doc.doctor_Experience}</p>
+          <div className="btn-group" role="group" >
           <td> <button type="button"
                 className="btn btn"
                 onClick={() =>
@@ -241,88 +252,8 @@ export class Doctor extends Component{
     </div>
   ))}
 </div>
-<div className="card mb-4 card-sm">
-  <div className="card-body">
-    <h5 className="card-title">Create New Doctor</h5>
-    <div className="form-group">
-      <label htmlFor="doctor_Name">Doctor Name:</label>
-      <input
-        type="text"
-        className="form-control"
-        id="doctor_Name"
-        value={doctor_Name}
-        onChange={this.handledocInputChange}
-      />
-    </div>
-
-    <div className="form-group">
-      <label htmlFor="doctor_Image">Doctor Image:</label>
-      <input
-        type="file"
-        className="form-control"
-        id="doctor_Image"
-        onChange={this.handleimageInputChange}
-      />
-    </div>
-
-    <div className="form-group">
-      <label htmlFor="doctor_Specialisation">doctor_Specialisation</label>
-      <input
-        type="text"
-        className="form-control"
-        id="doctor_Specialisation"
-        value={doctor_Specialisation}
-        onChange={this.handlespecInputChange}
-      />
-    </div>
-
-    <div className="form-group">
-      <label htmlFor="gender">Doctor Gender:</label>
-      <input
-        type="text"
-        className="form-control"
-        id="gender"
-        value={gender}
-        onChange={this.handlegenderInputChange}
-      />
-    </div>
-    <div className="form-group">
-      <label htmlFor="doctor_Experience">Doctor Experience:</label>
-      <input
-        type="number"
-        className="form-control"
-        id="doctor_Experience"
-        value={doctor_Experience}
-        onChange={this.handleexperiInputChange}
-      />
-    </div>
-    <div className="form-group">
-      <label htmlFor="password">Doctor Password:</label>
-      <input
-        type="text"
-        className="form-control"
-        id="password"
-        value={password}
-        onChange={this.handlepassInputChange}
-      />
-    </div>
-    {/* <div className="form-group">
-      <label htmlFor="status">Doctor status:</label>
-      <input
-        type="number"
-        className="form-control"
-        id="status"
-        value={status}
-        onChange={this.handlestatusInputChange}
-      />
-    </div> */}
-    <button className="btn btn-primary" onClick={this.createItem}>
-      Create Doctor
-    </button>
-  </div>
-</div>
-<div className="card card-sm">
-        <div className="card-body">
+<div className="card card-sm mx-auto" style={{ maxWidth: '500px', backdropFilter: 'blur(15px)', backgroundColor: 'transparent', marginTop: '100px' }}>
+        <div className="card-body" style={{color:"white"}}>
           <h5 className="card-title">Edit Doctor</h5>
           <div className="form-group">
             <label htmlFor="doctor_Id">Doctor Id:</label>
@@ -346,7 +277,7 @@ export class Doctor extends Component{
           </div>
 
           <div className="form-group">
-            <label htmlFor="doctor_Specialisation">doctor_Specialisation:</label>
+            <label htmlFor="doctor_Specialisation">Doctor Specialisation:</label>
             <input
               type="text"
               className="form-control"
@@ -394,15 +325,19 @@ export class Doctor extends Component{
               id="doctor_Image"
               onChange={this.handledocImageeditInputChange}
             />
-          </div>
+          </div><br/>
 
-          {/* Button to trigger the editItem function */}
-          <button className="btn btn-primary" onClick={this.editItem}>
-            Update Doctor
-          </button>
+          
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+  <button className="btn btn-primary" onClick={this.editItem}>
+    Update Doctor
+  </button>
+</div>
+
         </div>
       </div>
 </div>
+
         )
     }
 }
